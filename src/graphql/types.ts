@@ -47,6 +47,7 @@ export type Query = {
   __typename?: 'Query';
   getUser: User;
   getUsers: Array<User>;
+  getUserList: Array<User>;
   getAsset: Asset;
   getAssets: Array<Asset>;
 };
@@ -88,6 +89,8 @@ export type HealthFragment = { __typename?: 'Health', history: Array<string> };
 
 export type UserFragment = { __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> };
 
+export type UserItemFragment = { __typename?: 'User', uid: string, name: string, age: number };
+
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
@@ -113,6 +116,11 @@ export type GetUserQueryVariables = Exact<{
 
 
 export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
+
+export type GetUserListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetUserListQuery = { __typename?: 'Query', getUserList: Array<{ __typename?: 'User', uid: string, name: string, age: number }> };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -146,6 +154,13 @@ export const UserFragmentDoc = gql`
 }
     ${HealthFragmentDoc}
 ${AssetFragmentDoc}`;
+export const UserItemFragmentDoc = gql`
+    fragment userItem on User {
+  uid
+  name
+  age
+}
+    `;
 export const UpdateUserDocument = gql`
     mutation updateUser($updateUserInput: UpdateUserInput!) {
   updateUser(updateUserInput: $updateUserInput) {
@@ -174,6 +189,13 @@ export const GetUserDocument = gql`
   }
 }
     ${UserFragmentDoc}`;
+export const GetUserListDocument = gql`
+    query getUserList {
+  getUserList {
+    ...userItem
+  }
+}
+    ${UserItemFragmentDoc}`;
 export const GetUsersDocument = gql`
     query getUsers {
   getUsers {
@@ -190,6 +212,7 @@ const UpdateUserDocumentString = print(UpdateUserDocument);
 const GetAssetDocumentString = print(GetAssetDocument);
 const GetAssetsDocumentString = print(GetAssetsDocument);
 const GetUserDocumentString = print(GetUserDocument);
+const GetUserListDocumentString = print(GetUserListDocument);
 const GetUsersDocumentString = print(GetUsersDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
   return {
@@ -204,6 +227,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getUser(variables: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetUserQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetUserQuery>(GetUserDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUser');
+    },
+    getUserList(variables?: GetUserListQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetUserListQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetUserListQuery>(GetUserListDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUserList');
     },
     getUsers(variables?: GetUsersQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetUsersQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetUsersQuery>(GetUsersDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUsers');

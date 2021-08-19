@@ -11,9 +11,12 @@ describe("userImpl", () => {
     const users = await backend.user.getUsers();
     expect(users).toStrictEqual(graphqlMocks.user.users);
   });
-
-  it("getUsers", async () => {
+  it("getUser", async () => {
     const user = await backend.user.getUser("foo");
     expect(user).toStrictEqual(graphqlMocks.user.user);
+  });
+  it("getUserList", async () => {
+    const user = await backend.user.getUserList();
+    expect(user).toStrictEqual(graphqlMocks.user.userList);
   });
 });

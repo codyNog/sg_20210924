@@ -19,6 +19,6 @@ describe("useUserList", () => {
 
     await waitForNextUpdate();
 
-    expect(result.current.users).toStrictEqual(graphqlMocks.user.users);
+    expect(result.current.users).toStrictEqual(graphqlMocks.user.userList);
   });
 });

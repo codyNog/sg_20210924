@@ -1,8 +1,23 @@
-import { GetAssetQuery, GetUserQuery, GetUsersQuery } from "~/graphql/types";
+import {
+  GetAssetQuery,
+  GetUserListQuery,
+  GetUserQuery,
+  GetUsersQuery,
+  UserItemFragment
+} from "~/graphql/types";
 import { anAsset, aUser } from "~/mocks/graphql/mock";
 
 const user = aUser({});
 const users = [user];
+
+const userList: UserItemFragment[] = users.map((elem) => {
+  const { uid, name, age } = elem;
+  return { uid, name, age };
+});
+
+const userListQuery: GetUserListQuery = {
+  getUserList: userList
+};
 
 const userQuery: GetUserQuery = {
   getUser: user
@@ -21,8 +36,10 @@ export const graphqlMocks = {
   user: {
     user,
     users,
+    userList,
     userQuery,
-    usersQuery
+    usersQuery,
+    userListQuery
   },
   asset: {
     asset,

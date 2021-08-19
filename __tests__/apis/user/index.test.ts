@@ -15,4 +15,8 @@ describe("userRequests", () => {
     const user = await userRequests.getUser("foo");
     expect(user).toStrictEqual(graphqlMocks.user.user);
   });
+  it("getUserList", async () => {
+    const user = await userRequests.getUserList();
+    expect(user).toStrictEqual(graphqlMocks.user.userList);
+  });
 });

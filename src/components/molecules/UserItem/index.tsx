@@ -1,7 +1,7 @@
-import { User } from "~/domain/entity/User";
+import { UserItemFragment } from "~/graphql/types";
 
 interface Props {
-  user: User;
+  user: UserItemFragment;
 }
 
 export const UserItem: React.FC<Props> = ({ user }) => {

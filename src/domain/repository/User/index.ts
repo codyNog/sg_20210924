@@ -12,6 +12,10 @@ const getUser = async (uid: string): Promise<User> => {
   return user;
 };
 
+const getUserList = async () => {
+  return await userRequests.getUserList();
+};
+
 const updateUser = async (user: User) => {
   const { assets, ...rest } = user;
   const input: UpdateUserInput = {
@@ -24,6 +28,7 @@ const updateUser = async (user: User) => {
 export const userImpl = {
   getUsers,
   getUser,
+  getUserList,
   updateUser
 };
 

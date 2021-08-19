@@ -1,0 +1,5 @@
+fragment userItem on User {
+  uid
+  name
+  age
+}
