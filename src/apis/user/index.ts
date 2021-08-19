@@ -1,6 +1,5 @@
 import { client } from "~/apis";
-import { User } from "~/domain/entity/User";
-import { UpdateUserInput } from "~/graphql/types";
+import { UpdateUserInput, User } from "~/graphql/types";
 
 const getUsers = async (): Promise<User[]> =>
   (await client.getUsers()).data.getUsers;

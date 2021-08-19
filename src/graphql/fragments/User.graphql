@@ -2,6 +2,10 @@ fragment user on User {
   uid
   name
   age
+  score
+  health {
+    ...health
+  }
   assets {
     ...asset
   }

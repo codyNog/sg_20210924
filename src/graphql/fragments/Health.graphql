@@ -1,0 +1,3 @@
+fragment health on Health {
+  history
+}

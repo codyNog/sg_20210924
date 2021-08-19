@@ -24,6 +24,12 @@ export type Asset = {
   address: Scalars['String'];
 };
 
+/** health */
+export type Health = {
+  __typename?: 'Health';
+  history: Array<Scalars['String']>;
+};
+
 /** mutation */
 export type Mutation = {
   __typename?: 'Mutation';
@@ -34,15 +40,6 @@ export type Mutation = {
 /** mutation */
 export type MutationUpdateUserArgs = {
   updateUserInput: UpdateUserInput;
-};
-
-/** utils */
-export type PageInfo = {
-  __typename?: 'PageInfo';
-  endCursor?: Maybe<Scalars['String']>;
-  hasNextPage: Scalars['Boolean'];
-  hasPreviousPage: Scalars['Boolean'];
-  startCursor?: Maybe<Scalars['String']>;
 };
 
 /** query */
@@ -81,20 +78,22 @@ export type User = {
   name: Scalars['String'];
   age: Scalars['Int'];
   assets: Array<Asset>;
+  health: Health;
+  score: Scalars['Int'];
 };
 
 export type AssetFragment = { __typename?: 'Asset', uid: string, name: string, address: string };
 
-export type PageInfoFragment = { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: Maybe<string> };
+export type HealthFragment = { __typename?: 'Health', history: Array<string> };
 
-export type UserFragment = { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> };
+export type UserFragment = { __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> };
 
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
 
 export type GetAssetQueryVariables = Exact<{
   uid: Scalars['String'];
@@ -113,19 +112,16 @@ export type GetUserQueryVariables = Exact<{
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
+export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> }> };
+export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', uid: string, name: string, age: number, score: number, health: { __typename?: 'Health', history: Array<string> }, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> }> };
 
-export const PageInfoFragmentDoc = gql`
-    fragment pageInfo on PageInfo {
-  endCursor
-  hasNextPage
-  hasPreviousPage
-  startCursor
+export const HealthFragmentDoc = gql`
+    fragment health on Health {
+  history
 }
     `;
 export const AssetFragmentDoc = gql`
@@ -140,11 +136,16 @@ export const UserFragmentDoc = gql`
   uid
   name
   age
+  score
+  health {
+    ...health
+  }
   assets {
     ...asset
   }
 }
-    ${AssetFragmentDoc}`;
+    ${HealthFragmentDoc}
+${AssetFragmentDoc}`;
 export const UpdateUserDocument = gql`
     mutation updateUser($updateUserInput: UpdateUserInput!) {
   updateUser(updateUserInput: $updateUserInput) {

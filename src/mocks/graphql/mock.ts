@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-use-before-define,@typescript-eslint/no-unused-vars,no-prototype-builtins */
-import { Asset, PageInfo, UpdateUserInput, User } from '~/graphql/types';
+import { Asset, Health, UpdateUserInput, User } from '~/graphql/types';
 
 export const anAsset = (overrides?: Partial<Asset>, relationshipsToOmit: Set<string> = new Set()): Asset => {
     relationshipsToOmit.add('Asset');
@@ -10,13 +10,10 @@ export const anAsset = (overrides?: Partial<Asset>, relationshipsToOmit: Set<str
     };
 };
 
-export const aPageInfo = (overrides?: Partial<PageInfo>, relationshipsToOmit: Set<string> = new Set()): PageInfo => {
-    relationshipsToOmit.add('PageInfo');
+export const aHealth = (overrides?: Partial<Health>, relationshipsToOmit: Set<string> = new Set()): Health => {
+    relationshipsToOmit.add('Health');
     return {
-        endCursor: overrides && overrides.hasOwnProperty('endCursor') ? overrides.endCursor! : 'id',
-        hasNextPage: overrides && overrides.hasOwnProperty('hasNextPage') ? overrides.hasNextPage! : true,
-        hasPreviousPage: overrides && overrides.hasOwnProperty('hasPreviousPage') ? overrides.hasPreviousPage! : false,
-        startCursor: overrides && overrides.hasOwnProperty('startCursor') ? overrides.startCursor! : 'eum',
+        history: overrides && overrides.hasOwnProperty('history') ? overrides.history! : ['eligendi'],
     };
 };
 
@@ -37,5 +34,7 @@ export const aUser = (overrides?: Partial<User>, relationshipsToOmit: Set<string
         name: overrides && overrides.hasOwnProperty('name') ? overrides.name! : 'porro',
         age: overrides && overrides.hasOwnProperty('age') ? overrides.age! : 667,
         assets: overrides && overrides.hasOwnProperty('assets') ? overrides.assets! : [relationshipsToOmit.has('Asset') ? {} as Asset : anAsset({}, relationshipsToOmit)],
+        health: overrides && overrides.hasOwnProperty('health') ? overrides.health! : relationshipsToOmit.has('Health') ? {} as Health : aHealth({}, relationshipsToOmit),
+        score: overrides && overrides.hasOwnProperty('score') ? overrides.score! : 8645,
     };
 };
