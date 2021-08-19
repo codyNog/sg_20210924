@@ -7,8 +7,9 @@ query
 """
 type Query {
   getUser(uid: String!): User!
-  getUsers: Users!
+  getUsers: [User!]!
   getAsset(uid: String!): Asset!
+  getAssets: [Asset!]!
 }
 
 """
@@ -44,16 +45,7 @@ type User {
   uid: String!
   name: String!
   age: Int!
-  assets: [Asset!]
-}
-type UserEdge {
-  cursor: String!
-  node: User!
-}
-type Users {
-  totalCount: Int!
-  pageInfo: PageInfo!
-  edges: [UserEdge!]!
+  assets: [Asset!]!
 }
 
 """

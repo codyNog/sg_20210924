@@ -1,0 +1,5 @@
+query getAssets {
+  getAssets {
+    ...asset
+  }
+}

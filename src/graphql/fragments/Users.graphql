@@ -1,9 +1,0 @@
-fragment users on Users {
-  totalCount
-  edges {
-    ...userEdge
-  }
-  pageInfo {
-    ...pageInfo
-  }
-}

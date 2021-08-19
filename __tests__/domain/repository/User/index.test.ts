@@ -1,4 +1,5 @@
 import { backend } from "~/domain/backend";
+import { graphqlMocks } from "~/mocks/graphql";
 import { startTestServer } from "~/mocks/msw";
 
 describe("userImpl", () => {
@@ -8,8 +9,11 @@ describe("userImpl", () => {
 
   it("getUsers", async () => {
     const users = await backend.user.getUsers();
-    expect(users).toStrictEqual([
-      { age: 28, assets: [], name: "Kohki Noguchi", uid: "foo" }
-    ]);
+    expect(users).toStrictEqual(graphqlMocks.user.users);
+  });
+
+  it("getUsers", async () => {
+    const user = await backend.user.getUser("foo");
+    expect(user).toStrictEqual(graphqlMocks.user.user);
   });
 });

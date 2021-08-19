@@ -1,16 +1,15 @@
 import { userRequests } from "~/apis/user";
 import { User } from "~/domain/entity/User";
 import { UpdateUserInput } from "~/graphql/types";
-import { parsePagination } from "~/libs/graphql";
 
 const getUsers = async (): Promise<User[]> => {
   const users = await userRequests.getUsers();
-  return parsePagination(users, true);
+  return users;
 };
 
 const getUser = async (uid: string): Promise<User> => {
   const user = await userRequests.getUser(uid);
-  return { ...user, assets: [] };
+  return user;
 };
 
 const updateUser = async (user: User) => {

@@ -10,6 +10,9 @@ export const handlers = [
   localhost.query("getUsers", (_req, res, ctx) => {
     return res(ctx.data(graphqlMocks.user.usersQuery));
   }),
+  localhost.query("getUser", (_req, res, ctx) => {
+    return res(ctx.data(graphqlMocks.user.userQuery));
+  }),
   localhost.query("getAsset", (_req, res, ctx) => {
     return res(ctx.data(graphqlMocks.asset.assetQuery));
   })

@@ -1,6 +1,0 @@
-fragment userEdge on UserEdge {
-  cursor
-  node {
-    ...user
-  }
-}

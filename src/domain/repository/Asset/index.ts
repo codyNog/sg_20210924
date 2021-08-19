@@ -6,6 +6,12 @@ const getAsset = async (uid: string): Promise<Asset> => {
   return data;
 };
 
+const getAssets = async () => {
+  const data = await assetRequests.getAssets();
+  return data;
+};
+
 export const assetImpl = {
-  getAsset
+  getAsset,
+  getAssets
 };

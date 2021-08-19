@@ -2,4 +2,7 @@ fragment user on User {
   uid
   name
   age
+  assets {
+    ...asset
+  }
 }

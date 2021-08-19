@@ -1,14 +1,12 @@
-import { GetAssetQuery, GetUsersQuery } from "~/graphql/types";
-import { anAsset, aUser, aUserEdge, aUsers } from "~/mocks/graphql/mock";
+import { GetAssetQuery, GetUserQuery, GetUsersQuery } from "~/graphql/types";
+import { anAsset, aUser } from "~/mocks/graphql/mock";
 
-const users = aUsers({
-  edges: [
-    aUserEdge({
-      node: aUser({ uid: "foo", name: "Kohki Nguchi", age: 28, assets: [] })
-    })
-  ]
-});
+const user = aUser({});
+const users = [user];
 
+const userQuery: GetUserQuery = {
+  getUser: user
+};
 const usersQuery: GetUsersQuery = {
   getUsers: users
 };
@@ -21,7 +19,9 @@ const assetQuery: GetAssetQuery = {
 
 export const graphqlMocks = {
   user: {
+    user,
     users,
+    userQuery,
     usersQuery
   },
   asset: {

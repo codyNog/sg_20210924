@@ -49,8 +49,9 @@ export type PageInfo = {
 export type Query = {
   __typename?: 'Query';
   getUser: User;
-  getUsers: Users;
+  getUsers: Array<User>;
   getAsset: Asset;
+  getAssets: Array<Asset>;
 };
 
 
@@ -79,38 +80,21 @@ export type User = {
   uid: Scalars['String'];
   name: Scalars['String'];
   age: Scalars['Int'];
-  assets?: Maybe<Array<Asset>>;
-};
-
-export type UserEdge = {
-  __typename?: 'UserEdge';
-  cursor: Scalars['String'];
-  node: User;
-};
-
-export type Users = {
-  __typename?: 'Users';
-  totalCount: Scalars['Int'];
-  pageInfo: PageInfo;
-  edges: Array<UserEdge>;
+  assets: Array<Asset>;
 };
 
 export type AssetFragment = { __typename?: 'Asset', uid: string, name: string, address: string };
 
 export type PageInfoFragment = { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: Maybe<string> };
 
-export type UserFragment = { __typename?: 'User', uid: string, name: string, age: number };
-
-export type UserEdgeFragment = { __typename?: 'UserEdge', cursor: string, node: { __typename?: 'User', uid: string, name: string, age: number } };
-
-export type UsersFragment = { __typename?: 'Users', totalCount: number, edges: Array<{ __typename?: 'UserEdge', cursor: string, node: { __typename?: 'User', uid: string, name: string, age: number } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: Maybe<string> } };
+export type UserFragment = { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> };
 
 export type UpdateUserMutationVariables = Exact<{
   updateUserInput: UpdateUserInput;
 }>;
 
 
-export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', uid: string, name: string, age: number } };
+export type UpdateUserMutation = { __typename?: 'Mutation', updateUser: { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
 
 export type GetAssetQueryVariables = Exact<{
   uid: Scalars['String'];
@@ -119,18 +103,31 @@ export type GetAssetQueryVariables = Exact<{
 
 export type GetAssetQuery = { __typename?: 'Query', getAsset: { __typename?: 'Asset', uid: string, name: string, address: string } };
 
+export type GetAssetsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetAssetsQuery = { __typename?: 'Query', getAssets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> };
+
 export type GetUserQueryVariables = Exact<{
   uid: Scalars['String'];
 }>;
 
 
-export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', uid: string, name: string, age: number } };
+export type GetUserQuery = { __typename?: 'Query', getUser: { __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> } };
 
 export type GetUsersQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetUsersQuery = { __typename?: 'Query', getUsers: { __typename?: 'Users', totalCount: number, edges: Array<{ __typename?: 'UserEdge', cursor: string, node: { __typename?: 'User', uid: string, name: string, age: number } }>, pageInfo: { __typename?: 'PageInfo', endCursor?: Maybe<string>, hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: Maybe<string> } } };
+export type GetUsersQuery = { __typename?: 'Query', getUsers: Array<{ __typename?: 'User', uid: string, name: string, age: number, assets: Array<{ __typename?: 'Asset', uid: string, name: string, address: string }> }> };
 
+export const PageInfoFragmentDoc = gql`
+    fragment pageInfo on PageInfo {
+  endCursor
+  hasNextPage
+  hasPreviousPage
+  startCursor
+}
+    `;
 export const AssetFragmentDoc = gql`
     fragment asset on Asset {
   uid
@@ -143,36 +140,11 @@ export const UserFragmentDoc = gql`
   uid
   name
   age
-}
-    `;
-export const UserEdgeFragmentDoc = gql`
-    fragment userEdge on UserEdge {
-  cursor
-  node {
-    ...user
+  assets {
+    ...asset
   }
 }
-    ${UserFragmentDoc}`;
-export const PageInfoFragmentDoc = gql`
-    fragment pageInfo on PageInfo {
-  endCursor
-  hasNextPage
-  hasPreviousPage
-  startCursor
-}
-    `;
-export const UsersFragmentDoc = gql`
-    fragment users on Users {
-  totalCount
-  edges {
-    ...userEdge
-  }
-  pageInfo {
-    ...pageInfo
-  }
-}
-    ${UserEdgeFragmentDoc}
-${PageInfoFragmentDoc}`;
+    ${AssetFragmentDoc}`;
 export const UpdateUserDocument = gql`
     mutation updateUser($updateUserInput: UpdateUserInput!) {
   updateUser(updateUserInput: $updateUserInput) {
@@ -187,6 +159,13 @@ export const GetAssetDocument = gql`
   }
 }
     ${AssetFragmentDoc}`;
+export const GetAssetsDocument = gql`
+    query getAssets {
+  getAssets {
+    ...asset
+  }
+}
+    ${AssetFragmentDoc}`;
 export const GetUserDocument = gql`
     query getUser($uid: String!) {
   getUser(uid: $uid) {
@@ -197,10 +176,10 @@ export const GetUserDocument = gql`
 export const GetUsersDocument = gql`
     query getUsers {
   getUsers {
-    ...users
+    ...user
   }
 }
-    ${UsersFragmentDoc}`;
+    ${UserFragmentDoc}`;
 
 export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, string>) => Promise<T>, operationName: string) => Promise<T>;
 
@@ -208,6 +187,7 @@ export type SdkFunctionWrapper = <T>(action: (requestHeaders?:Record<string, str
 const defaultWrapper: SdkFunctionWrapper = (action, _operationName) => action();
 const UpdateUserDocumentString = print(UpdateUserDocument);
 const GetAssetDocumentString = print(GetAssetDocument);
+const GetAssetsDocumentString = print(GetAssetsDocument);
 const GetUserDocumentString = print(GetUserDocument);
 const GetUsersDocumentString = print(GetUsersDocument);
 export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = defaultWrapper) {
@@ -217,6 +197,9 @@ export function getSdk(client: GraphQLClient, withWrapper: SdkFunctionWrapper = 
     },
     getAsset(variables: GetAssetQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetAssetQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetAssetQuery>(GetAssetDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAsset');
+    },
+    getAssets(variables?: GetAssetsQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetAssetsQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
+        return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetAssetsQuery>(GetAssetsDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getAssets');
     },
     getUser(variables: GetUserQueryVariables, requestHeaders?: Dom.RequestInit["headers"]): Promise<{ data?: GetUserQuery | undefined; extensions?: any; headers: Dom.Headers; status: number; errors?: GraphQLError[] | undefined; }> {
         return withWrapper((wrappedRequestHeaders) => client.rawRequest<GetUserQuery>(GetUserDocumentString, variables, {...requestHeaders, ...wrappedRequestHeaders}), 'getUser');
