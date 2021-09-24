@@ -1,14 +1,19 @@
+import styled from "@emotion/styled";
 import { UserItemFragment } from "~/graphql/types";
 
 interface Props {
   user: UserItemFragment;
 }
 
+const Wrapper = styled.div({
+  border: "1px solid black"
+});
+
 export const UserItem: React.FC<Props> = ({ user }) => {
   return (
-    <div>
-      <div>{user.name}</div>
-      <div>{user.age}</div>
-    </div>
+    <Wrapper>
+      <div>name: {user.name}</div>
+      <div>age: {user.age}</div>
+    </Wrapper>
   );
 };
