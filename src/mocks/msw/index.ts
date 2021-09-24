@@ -6,7 +6,11 @@ import { GRAPHQL_URL } from "~/constants/env";
 
 const localhost = graphql.link(GRAPHQL_URL);
 
-const handlers = [];
+const handlers = [
+  localhost.query("getAssets", (_req, res, ctx) => {
+    return res(ctx.data(graphqlMocks.asset.getAssetsQuery));
+  })
+];
 
 export const startTestServer = () => {
   const server = setupServer(...handlers);
