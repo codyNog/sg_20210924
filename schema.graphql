@@ -9,7 +9,6 @@ query
 type Query {
   getUser(uid: String!): User!
   getUsers: [User!]!
-  getUserList: [User!]!
   getAsset(uid: String!): Asset!
   getAssets: [Asset!]!
 }

@@ -6,20 +6,7 @@ import { GRAPHQL_URL } from "~/constants/env";
 
 const localhost = graphql.link(GRAPHQL_URL);
 
-export const handlers = [
-  localhost.query("getUsers", (_req, res, ctx) => {
-    return res(ctx.data(graphqlMocks.user.usersQuery));
-  }),
-  localhost.query("getUser", (_req, res, ctx) => {
-    return res(ctx.data(graphqlMocks.user.userQuery));
-  }),
-  localhost.query("getUserList", (_req, res, ctx) => {
-    return res(ctx.data(graphqlMocks.user.userListQuery));
-  }),
-  localhost.query("getAsset", (_req, res, ctx) => {
-    return res(ctx.data(graphqlMocks.asset.assetQuery));
-  })
-];
+const handlers = [];
 
 export const startTestServer = () => {
   const server = setupServer(...handlers);
